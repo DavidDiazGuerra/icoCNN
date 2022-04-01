@@ -143,4 +143,4 @@ in Proceedings of the 36th International Conference on Machine Learning. PMLR, M
 
 [2] Diaz-Guerra, D., Miguel, A. & Beltran, J.R. 
 Direction of Arrival Estimation of Sound Sources Using Icosahedral CNNs.
-[[arXiv preprint](https://arxiv.org/abs/1810.11359)]
+[[arXiv preprint](https://arxiv.org/abs/2203.16940)]
