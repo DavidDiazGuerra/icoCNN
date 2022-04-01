@@ -15,6 +15,12 @@ from scipy.spatial.distance import cdist
 import torch
 import einops
 
+try:
+    import importlib.resources as pkg_resources
+except ImportError:
+    # Try backported to PY<37 `importlib_resources`.
+    import importlib_resources as pkg_resources
+
 from icoCNN import icosahedral_grid_coordinates
 
 __all__ = ["clean_vertices", "smooth_vertices", "random_icosahedral_rotation_matrix", "rotate_signal"]
@@ -90,7 +96,8 @@ def random_icosahedral_rotation_matrix(idx=None):
 		or to an icosahedral grid with np.matmul(ico_grid, rotation_matrix.transpose())
 	"""
 	if idx is None: idx = random.randrange(60)
-	return np.load("rotation_matrices.npy")[idx]
+	with pkg_resources.path('icoCNN', 'rotation_matrices.npy') as path:
+		return np.load(path)[idx]
 
 
 def rotate_signal(x, rotation_matrix, original_grid=None):

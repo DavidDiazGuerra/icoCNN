@@ -28,5 +28,6 @@ setup(
 	author_email='ddga@unizar.es',
 	description='Python package with a pytorch implementation of the icosahedral CNNs (Cohen et al., 2019)',
 	long_description=long_description,
-	long_description_content_type="text/markdown"
+	long_description_content_type="text/markdown",
+	package_data={'icoCNN': ['rotation_matrices.npy']},
 )
