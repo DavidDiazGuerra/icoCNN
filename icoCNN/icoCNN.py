@@ -285,6 +285,31 @@ class PoolIco(torch.nn.Module):
 		y = self.function(receptive_field, -1)
 		return self.process_vertices(y)
 
+class UnPoolIco(torch.nn.Module):
+	"""  Pytorch icosahedral unpooling layer
+
+	Parameters
+	----------
+	r : int
+		Resolution of the input icosahedral signal
+
+	Shape
+	-----
+	Input : [..., R, 5, 2^r, 2^(r+1)]
+	Output : [..., R, 5, 2^(r+1), 2^(r+2)]
+	"""
+
+	def __init__(self, r):
+		super().__init__()
+		self.r = r
+		self.rows = 1+2*torch.arange(2^(r+1)).unsqueeze(1)
+		self.cols = 1+2*torch.arange(2^(r+2)).unsqueeze(0)
+
+	def forward(self, x):
+		y = torch.zeros(x.shape[..., 2^(self.r+1), 2^(self.r+2)])
+		y[..., self.rows, self.cols] = x
+
+		return y
 
 class LNormIco(torch.nn.Module):
 	"""  Pytorch icosahedral layer normalization layer
