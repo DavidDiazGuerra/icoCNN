@@ -292,6 +292,9 @@ class UnPoolIco(torch.nn.Module):
 	----------
 	r : int
 		Resolution of the input icosahedral signal
+	R : int, 1 or 6
+		6 when the input signal includes the 6 kernel orientation channels or 1 if it doesn't
+
 
 	Shape
 	-----
@@ -299,16 +302,19 @@ class UnPoolIco(torch.nn.Module):
 	Output : [..., R, 5, 2^(r+1), 2^(r+2)]
 	"""
 
-	def __init__(self, r):
+	def __init__(self, r, R):
 		super().__init__()
 		self.r = r
-		self.rows = 1+2*torch.arange(2^(r+1)).unsqueeze(1)
+		self.R = R
+		self.rows = 1+2*torch.arange(2^(r+1)).unsqueeze(1) # center of the 
 		self.cols = 1+2*torch.arange(2^(r+2)).unsqueeze(0)
+		self.padding = PadIco(r+1, R)
 
 	def forward(self, x):
-		y = torch.zeros(x.shape[..., 2^(self.r+1), 2^(self.r+2)])
+		y = torch.zeros((x.shape[:-2], 2^(self.r+1), 2^(self.r+2)))
+		y = self.padding(y)
 		y[..., self.rows, self.cols] = x
-
+		y = y[..., 1:-1, 1:-1]
 		return y
 
 class LNormIco(torch.nn.Module):
