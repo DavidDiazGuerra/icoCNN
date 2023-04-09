@@ -12,7 +12,7 @@ import torch
 import einops
 from math import sqrt
 
-__all__ = ["CleanVertices", "SmoothVertices", "PadIco", "ConvIco", "PoolIco", "LNormIco"]
+__all__ = ["CleanVertices", "SmoothVertices", "PadIco", "ConvIco", "PoolIco", "LNormIco", "UnPoolIco"]
 
 
 class CleanVertices(torch.nn.Module):
@@ -306,12 +306,12 @@ class UnPoolIco(torch.nn.Module):
 		super().__init__()
 		self.r = r
 		self.R = R
-		self.rows = 1+2*torch.arange(2^(r+1)).unsqueeze(1) # center of the 
-		self.cols = 1+2*torch.arange(2^(r+2)).unsqueeze(0)
+		self.rows = 1+2*torch.arange(2**(r)).unsqueeze(1) # x coord of the center of the hexagonal cell in the unpooled map
+		self.cols = 1+2*torch.arange(2**(r+1)).unsqueeze(0) # y coord of the center of the hexagonal cell in the unpooled map
 		self.padding = PadIco(r+1, R)
 
 	def forward(self, x):
-		y = torch.zeros((x.shape[:-2], 2^(self.r+1), 2^(self.r+2)))
+		y = torch.zeros((x.shape[:-2] + (int(2**(self.r+1)), int(2**(self.r+2)))), device=x.device)
 		y = self.padding(y)
 		y[..., self.rows, self.cols] = x
 		y = y[..., 1:-1, 1:-1]

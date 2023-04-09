@@ -1,0 +1,13 @@
+README.md
+setup.py
+icoCNN/__init__.py
+icoCNN/icoCNN.py
+icoCNN/icoGrid.py
+icoCNN/plots.py
+icoCNN/rotation_matrices.npy
+icoCNN/tools.py
+icoCNN.egg-info/PKG-INFO
+icoCNN.egg-info/SOURCES.txt
+icoCNN.egg-info/dependency_links.txt
+icoCNN.egg-info/requires.txt
+icoCNN.egg-info/top_level.txt
