@@ -13,7 +13,7 @@ consider citing that paper if you find this implementation useful for your resea
   * [`PoolIco`](#PoolIco)
   * [`LNormIco`](#LNormIco)
   * [`PadIco`](#PadIco)
-  * [`UnPoolIco`]()
+  * [`UnPoolIco`](#UnPoolIco)
   * [`CleanVertices`](#CleanVertices)
   * [`SmoothVertices`](#SmoothVertices)
   * [`tools`](#tools)
