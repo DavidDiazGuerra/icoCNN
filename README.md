@@ -13,6 +13,7 @@ consider citing that paper if you find this implementation useful for your resea
   * [`PoolIco`](#PoolIco)
   * [`LNormIco`](#LNormIco)
   * [`PadIco`](#PadIco)
+  * [`UnPoolIco`]()
   * [`CleanVertices`](#CleanVertices)
   * [`SmoothVertices`](#SmoothVertices)
   * [`tools`](#tools)
@@ -107,6 +108,17 @@ Pytorch module to pad every chart of an icosahedral signal.
 #### Shape
 * **Input** : [..., R, 5, 2^r, 2^(r+1)]
 * **Output** : [..., R, 5, 2^r+2, 2^(r+1)+2]
+
+### `UnPoolIco`
+Pytorch icosahedral unpooling layer
+#### Parameters
+* **r** : *int*,
+        Resolution of the input icosahedral signal
+* **R** : *int (1 or 6)*,
+        6 when the input signal includes the 6 kernel orientation channels or 1 if it doesn't
+#### Shape
+* **Input** : [..., R, 5, 2^r, 2^(r+1)]
+* **Output** : [..., R, 5, 2^(r+1), 2^(r+2)]
 
 ### `CleanVertices`
 Pytorch layer to turn into 0 the vertices of icosahedral signals.
