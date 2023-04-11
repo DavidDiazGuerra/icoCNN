@@ -1,3 +1,0 @@
-
-[draw3D]
-vpython
