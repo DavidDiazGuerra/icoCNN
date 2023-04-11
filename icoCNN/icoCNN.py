@@ -12,7 +12,7 @@ import torch
 import einops
 from math import sqrt
 
-__all__ = ["CleanVertices", "SmoothVertices", "PadIco", "ConvIco", "PoolIco", "LNormIco"]
+__all__ = ["CleanVertices", "SmoothVertices", "PadIco", "ConvIco", "PoolIco", "LNormIco", "UnPoolIco"]
 
 
 class CleanVertices(torch.nn.Module):
@@ -285,6 +285,37 @@ class PoolIco(torch.nn.Module):
 		y = self.function(receptive_field, -1)
 		return self.process_vertices(y)
 
+class UnPoolIco(torch.nn.Module):
+	"""  Pytorch icosahedral unpooling layer
+
+	Parameters
+	----------
+	r : int
+		Resolution of the input icosahedral signal
+	R : int, 1 or 6
+		6 when the input signal includes the 6 kernel orientation channels or 1 if it doesn't
+
+
+	Shape
+	-----
+	Input : [..., R, 5, 2^r, 2^(r+1)]
+	Output : [..., R, 5, 2^(r+1), 2^(r+2)]
+	"""
+
+	def __init__(self, r, R):
+		super().__init__()
+		self.r = r
+		self.R = R
+		self.rows = 1+2*torch.arange(2**(r)).unsqueeze(1) # x coord of the center of the hexagonal cell in the unpooled map
+		self.cols = 1+2*torch.arange(2**(r+1)).unsqueeze(0) # y coord of the center of the hexagonal cell in the unpooled map
+		self.padding = PadIco(r+1, R)
+
+	def forward(self, x):
+		y = torch.zeros((x.shape[:-2] + (int(2**(self.r+1)), int(2**(self.r+2)))), device=x.device)
+		y = self.padding(y)
+		y[..., self.rows, self.cols] = x
+		y = y[..., 1:-1, 1:-1]
+		return y
 
 class LNormIco(torch.nn.Module):
 	"""  Pytorch icosahedral layer normalization layer
