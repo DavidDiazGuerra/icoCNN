@@ -11,9 +11,9 @@ consider citing that paper if you find this implementation useful for your resea
   * [`icosahedral_grid_coordinates`](#icosahedral_grid_coordinates)
   * [`ConvIco`](#ConvIco)
   * [`PoolIco`](#PoolIco)
+  * [`UnPoolIco`](#UnPoolIco)
   * [`LNormIco`](#LNormIco)
   * [`PadIco`](#PadIco)
-  * [`UnPoolIco`](#UnPoolIco)
   * [`CleanVertices`](#CleanVertices)
   * [`SmoothVertices`](#SmoothVertices)
   * [`tools`](#tools)
@@ -81,6 +81,17 @@ Pytorch icosahedral pooling layer.
 * **Input** : [..., R, 5, 2^r, 2^(r+1)]
 * **Output** : [..., R, 5, 2^(r-1), 2^r]
 
+### `UnPoolIco`
+Pytorch icosahedral unpooling layer. The values of the input signal are copied to the hexagonal pixels of the output that have the same center and the rest of the output is set to zero.
+#### Parameters
+* **r** : *int*,
+        Resolution of the input icosahedral signal
+* **R** : *int (1 or 6)*,
+        6 when the input signal includes the 6 kernel orientation channels or 1 if it doesn't
+#### Shape
+* **Input** : [..., R, 5, 2^r, 2^(r+1)]
+* **Output** : [..., R, 5, 2^(r+1), 2^(r+2)]
+
 ### `LNormIco`
 Pytorch icosahedral layer normalization layer.
 #### Parameters
@@ -108,17 +119,6 @@ Pytorch module to pad every chart of an icosahedral signal.
 #### Shape
 * **Input** : [..., R, 5, 2^r, 2^(r+1)]
 * **Output** : [..., R, 5, 2^r+2, 2^(r+1)+2]
-
-### `UnPoolIco`
-Pytorch icosahedral unpooling layer
-#### Parameters
-* **r** : *int*,
-        Resolution of the input icosahedral signal
-* **R** : *int (1 or 6)*,
-        6 when the input signal includes the 6 kernel orientation channels or 1 if it doesn't
-#### Shape
-* **Input** : [..., R, 5, 2^r, 2^(r+1)]
-* **Output** : [..., R, 5, 2^(r+1), 2^(r+2)]
 
 ### `CleanVertices`
 Pytorch layer to turn into 0 the vertices of icosahedral signals.
