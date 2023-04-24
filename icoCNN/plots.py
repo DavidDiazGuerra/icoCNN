@@ -53,7 +53,7 @@ def icosahedral_scatter(x, grid=None, ax=None, cmap='inferno'):
 	else:
 		assert x.shape[-3:] == grid.shape[:-1]
 	if ax is None:
-		ax = plt.figure().gca(projection='3d')
+		ax = plt.figure().add_subplot(projection='3d')
 	ax.scatter(grid[..., 0].ravel(), grid[..., 1].ravel(), grid[..., 2].ravel(), c=x.ravel(), cmap=cmap)
 
 
